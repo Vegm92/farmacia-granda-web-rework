@@ -55,7 +55,7 @@ describe('ProductPage', () => {
 
   it('calls notFound when product does not exist', async () => {
     jest.mocked(getProductBySlug).mockResolvedValue(null)
-    await ProductPage({ params: Promise.resolve({ slug: 'not-found' }) }).catch(() => {})
+    await ProductPage({ params: Promise.resolve({ slug: 'not-found' }) })
     expect(notFound).toHaveBeenCalled()
   })
 })

@@ -11,7 +11,7 @@ export default async function ProductPage({ params }: Props) {
   const product = await getProductBySlug(slug).catch(() => null)
   if (!product) return notFound()
 
-  const hasDiscount = product.price !== product.regular_price
+  const hasDiscount = Boolean(product.regular_price) && product.price !== product.regular_price
   const image = product.images[0]
 
   const formatPrice = (value: string) =>
