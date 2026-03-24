@@ -1,6 +1,12 @@
 import Link from 'next/link'
 import { BlogPost } from '@/types'
 
+const HEX_COLOUR_RE = /^#[0-9a-fA-F]{3,6}$/
+
+function safeColor(value: string, fallback = '#d1fae5'): string {
+  return HEX_COLOUR_RE.test(value) ? value : fallback
+}
+
 interface BlogPreviewProps {
   posts: BlogPost[]
 }
@@ -26,7 +32,7 @@ export default function BlogPreview({ posts }: BlogPreviewProps) {
               <article className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                 <div
                   className="h-40 w-full"
-                  style={{ backgroundColor: post.image_color }}
+                  style={{ backgroundColor: safeColor(post.image_color) }}
                   aria-hidden="true"
                 />
                 <div className="p-5">

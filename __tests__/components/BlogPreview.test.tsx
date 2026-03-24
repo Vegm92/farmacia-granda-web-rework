@@ -26,4 +26,18 @@ describe('BlogPreview', () => {
     expect(screen.getAllByText('Dermatología')).toHaveLength(2)
     expect(screen.getByText('Nutrición')).toBeInTheDocument()
   })
+
+  it('links each post card to the correct blog slug', () => {
+    render(<BlogPreview posts={mockPosts} />)
+    mockPosts.forEach((post) => {
+      const link = screen.getByRole('link', { name: new RegExp(post.title) })
+      expect(link).toHaveAttribute('href', `/blog/${post.slug}`)
+    })
+  })
+
+  it('links "Ver todos los artículos" to /blog', () => {
+    render(<BlogPreview posts={mockPosts} />)
+    const link = screen.getByRole('link', { name: /Ver todos los artículos/ })
+    expect(link).toHaveAttribute('href', '/blog')
+  })
 })
