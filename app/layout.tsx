@@ -1,28 +1,32 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import Navbar from '@/components/layout/Navbar'
+import type { NavLink } from '@/types'
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
   title: 'Farmacia Granda — Farmacia Online',
   description: 'Más de 5.000 productos seleccionados por nuestros farmacéuticos. Envío en 24-48h.',
-};
+}
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const NAV_LINKS: NavLink[] = [
+  { label: 'Dermofarmacia', href: '/categoria/dermofarmacia' },
+  { label: 'Bebé y Maternidad', href: '/categoria/bebe-maternidad' },
+  { label: 'Salud', href: '/categoria/salud' },
+  { label: 'Nutrición', href: '/categoria/nutricion' },
+  { label: 'Óptica', href: '/categoria/optica' },
+  { label: 'Ofertas', href: '/ofertas', highlight: true },
+]
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="es" className={inter.variable}>
+      <body>
+        <Navbar links={NAV_LINKS} />
+        {children}
+      </body>
     </html>
-  );
+  )
 }
