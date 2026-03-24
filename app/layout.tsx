@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import type { NavLink } from '@/types'
+import type { ReactNode } from 'react'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
@@ -20,7 +21,7 @@ const NAV_LINKS: NavLink[] = [
   { label: 'Ofertas', href: '/ofertas', highlight: true },
 ]
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es" className={inter.variable}>
       <body>
