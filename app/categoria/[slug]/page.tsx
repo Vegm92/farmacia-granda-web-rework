@@ -25,10 +25,10 @@ const CATEGORY_NAMES: Record<string, string> = {
 }
 
 function slugToTitle(slug: string): string {
-  return CATEGORY_NAMES[slug] ?? slug
+  return CATEGORY_NAMES[slug] ?? (slug
     .split('-')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ')
+    .join(' '))
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {

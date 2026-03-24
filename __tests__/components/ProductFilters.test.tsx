@@ -32,4 +32,11 @@ describe('ProductFilters', () => {
     fireEvent.change(select, { target: { value: 'price_asc' } })
     expect(mockPush).toHaveBeenCalledWith('/categoria/salud?sort=price_asc')
   })
+
+  it('navigates to clean pathname (no trailing ?) when selecting default sort', () => {
+    render(<ProductFilters currentSort="price_asc" />)
+    const select = screen.getByRole('combobox', { name: /ordenar/i })
+    fireEvent.change(select, { target: { value: 'default' } })
+    expect(mockPush).toHaveBeenCalledWith('/categoria/salud')
+  })
 })

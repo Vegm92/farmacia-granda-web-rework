@@ -24,7 +24,7 @@ describe('CategoryPage', () => {
       searchParams: Promise.resolve({}),
     })
     render(jsx)
-    expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Dermofarmacia')
   })
 
   it('renders all product cards', async () => {

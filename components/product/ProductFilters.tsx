@@ -25,7 +25,7 @@ export default function ProductFilters({ currentSort }: Props) {
     } else {
       params.set('sort', value)
     }
-    router.push(`${pathname}?${params.toString()}`)
+    router.push(params.toString() ? `${pathname}?${params.toString()}` : pathname)
   }
 
   return (
