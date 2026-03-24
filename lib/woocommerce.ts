@@ -1,4 +1,4 @@
-import type { Product, BlogPost } from '@/types'
+import type { Product, BlogPost, ProductDetail, BlogPostFull } from '@/types'
 
 const BASE_URL = process.env.WOOCOMMERCE_URL
 const KEY = process.env.WOOCOMMERCE_KEY
@@ -75,4 +75,65 @@ export async function getRecentPosts(limit = 3): Promise<BlogPost[]> {
     `/wp-json/wp/v2/posts?per_page=${limit}&_fields=id,slug,title,class_list,featured_media_url`
   )
   return raw.map(mapPost)
+}
+
+function mapProductDetail(raw: Record<string, unknown>): ProductDetail {
+  return {
+    ...mapProduct(raw),
+    description: raw.description as string,
+    short_description: raw.short_description as string,
+    categories: (raw.categories as { id: number; name: string; slug: string }[]) ?? [],
+    stock_status: raw.stock_status as 'instock' | 'outofstock' | 'onbackorder',
+  }
+}
+
+async function getCategoryIdBySlug(slug: string): Promise<number | null> {
+  const cats = await wcFetch<{ id: number; slug: string }[]>(
+    `/wp-json/wc/v3/products/categories?slug=${slug}`
+  )
+  return cats[0]?.id ?? null
+}
+
+export async function getProductsByCategory(
+  categorySlug: string,
+  perPage = 12,
+  orderby = 'menu_order',
+  order = 'asc'
+): Promise<Product[]> {
+  const categoryId = await getCategoryIdBySlug(categorySlug)
+  if (!categoryId) return []
+  const raw = await wcFetch<Record<string, unknown>[]>(
+    `/wp-json/wc/v3/products?category=${categoryId}&per_page=${perPage}&orderby=${orderby}&order=${order}`
+  )
+  return raw.map(mapProduct)
+}
+
+export async function getProductBySlug(slug: string): Promise<ProductDetail | null> {
+  const raw = await wcFetch<Record<string, unknown>[]>(
+    `/wp-json/wc/v3/products?slug=${slug}`
+  )
+  return raw[0] ? mapProductDetail(raw[0]) : null
+}
+
+export async function getBlogPosts(limit = 9): Promise<BlogPost[]> {
+  const raw = await wcFetch<Record<string, unknown>[]>(
+    `/wp-json/wp/v2/posts?per_page=${limit}&_fields=id,slug,title,class_list,featured_media_url`
+  )
+  return raw.map(mapPost)
+}
+
+function mapPostFull(raw: Record<string, unknown>): BlogPostFull {
+  return {
+    ...mapPost(raw),
+    content: (raw.content as { rendered: string }).rendered,
+    excerpt: (raw.excerpt as { rendered: string }).rendered,
+    date: raw.date as string,
+  }
+}
+
+export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | null> {
+  const raw = await wcFetch<Record<string, unknown>[]>(
+    `/wp-json/wp/v2/posts?slug=${slug}&_fields=id,slug,title,class_list,featured_media_url,content,excerpt,date`
+  )
+  return raw[0] ? mapPostFull(raw[0]) : null
 }

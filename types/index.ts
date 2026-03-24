@@ -31,3 +31,16 @@ export interface TrustItem {
   title: string
   subtitle: string
 }
+
+export interface ProductDetail extends Product {
+  description: string
+  short_description: string
+  categories: { id: number; name: string; slug: string }[]
+  stock_status: 'instock' | 'outofstock' | 'onbackorder'
+}
+
+export interface BlogPostFull extends BlogPost {
+  content: string
+  excerpt: string
+  date: string
+}
