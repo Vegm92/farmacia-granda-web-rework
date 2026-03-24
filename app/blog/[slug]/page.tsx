@@ -8,7 +8,7 @@ interface Props {
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
   const post = await getBlogPostBySlug(slug).catch(() => null)
-  if (!post) notFound()
+  if (!post) return notFound()
 
   const formattedDate = new Date(post.date).toLocaleDateString('es-ES', {
     year: 'numeric',

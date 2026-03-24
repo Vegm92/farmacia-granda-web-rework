@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import BlogPostPage from '@/app/blog/[slug]/page'
 import { getBlogPostBySlug } from '@/lib/woocommerce'
 import type { BlogPostFull } from '@/types'
+import { notFound } from 'next/navigation'
 
 jest.mock('@/lib/woocommerce')
 jest.mock('next/navigation', () => ({ notFound: jest.fn() }))
@@ -40,7 +41,6 @@ describe('BlogPostPage', () => {
   })
 
   it('calls notFound when post does not exist', async () => {
-    const { notFound } = require('next/navigation')
     jest.mocked(getBlogPostBySlug).mockResolvedValue(null)
     await BlogPostPage({ params: Promise.resolve({ slug: 'not-found' }) }).catch(() => {})
     expect(notFound).toHaveBeenCalled()
