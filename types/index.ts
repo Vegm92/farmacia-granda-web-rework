@@ -44,3 +44,8 @@ export interface BlogPostFull extends BlogPost {
   excerpt: string
   date: string
 }
+
+export interface CartItem {
+  product: Product
+  quantity: number
+}
