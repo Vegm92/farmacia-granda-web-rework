@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/layout/Navbar'
+import { CartProvider } from '@/lib/cart-context'
 import type { NavLink } from '@/types'
 import type { ReactNode } from 'react'
 
@@ -25,8 +26,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es" className={inter.variable}>
       <body>
-        <Navbar links={NAV_LINKS} />
-        {children}
+        <CartProvider>
+          <Navbar links={NAV_LINKS} />
+          {children}
+        </CartProvider>
       </body>
     </html>
   )

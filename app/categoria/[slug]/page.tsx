@@ -1,6 +1,7 @@
 import ProductCard from '@/components/product/ProductCard'
 import ProductFilters from '@/components/product/ProductFilters'
 import { getProductsByCategory } from '@/lib/woocommerce'
+import { MOCK_PRODUCTS } from '@/lib/mocks'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -36,7 +37,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { sort = 'default' } = await searchParams
   const { orderby, order } = SORT_MAP[sort] ?? SORT_MAP.default
 
-  const products = await getProductsByCategory(slug, 12, orderby, order).catch(() => [])
+  const products = await getProductsByCategory(slug, 12, orderby, order).catch(() => MOCK_PRODUCTS)
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-12">

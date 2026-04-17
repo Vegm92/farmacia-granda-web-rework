@@ -1,5 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import Navbar from '../../components/layout/Navbar'
+import * as cartContext from '@/lib/cart-context'
+
+jest.mock('@/lib/cart-context')
+
+beforeEach(() => {
+  jest.mocked(cartContext.useCart).mockReturnValue({ cart: null, refresh: jest.fn() })
+})
 
 const links = [
   { label: 'Dermofarmacia', href: '/categoria/dermofarmacia' },
@@ -31,5 +38,5 @@ test('renders search, user and cart icons', () => {
   render(<Navbar links={links} />)
   expect(screen.getByLabelText('Buscar')).toBeInTheDocument()
   expect(screen.getByLabelText('Mi cuenta')).toBeInTheDocument()
-  expect(screen.getByLabelText('Carrito')).toBeInTheDocument()
+  expect(screen.getByLabelText(/carrito/i)).toBeInTheDocument()
 })

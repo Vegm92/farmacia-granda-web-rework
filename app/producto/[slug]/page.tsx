@@ -1,6 +1,7 @@
 import Image from 'next/image'
-import { getProductBySlug } from '@/lib/woocommerce'
 import { notFound } from 'next/navigation'
+import { getProductBySlug } from '@/lib/woocommerce'
+import { MOCK_PRODUCT_DETAIL, MOCK_PRODUCTS } from '@/lib/mocks'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -8,7 +9,10 @@ interface Props {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params
-  const product = await getProductBySlug(slug).catch(() => null)
+  const mockFallback = MOCK_PRODUCTS.find((p) => p.slug === slug)
+    ? MOCK_PRODUCT_DETAIL
+    : null
+  const product = await getProductBySlug(slug).catch(() => mockFallback)
   if (!product) return notFound()
 
   const hasDiscount = Boolean(product.regular_price) && product.price !== product.regular_price

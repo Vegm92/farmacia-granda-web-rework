@@ -1,15 +1,9 @@
 import BlogCard from '@/components/blog/BlogCard'
 import { getBlogPosts } from '@/lib/woocommerce'
-import type { BlogPost } from '@/types'
-
-const PLACEHOLDER_POSTS: BlogPost[] = [
-  { id: 1, slug: 'fotoprotector', title: 'Cómo elegir el fotoprotector según tu tipo de piel', tag: 'Dermofarmacia', image_color: '#fef9c3' },
-  { id: 2, slug: 'vitamina-d', title: 'Vitamina D: cuándo y cómo suplementar correctamente', tag: 'Salud', image_color: '#dbeafe' },
-  { id: 3, slug: 'probioticos', title: 'Los mejores probióticos para la salud intestinal', tag: 'Nutrición', image_color: '#f0f7f4' },
-]
+import { MOCK_BLOG_POSTS } from '@/lib/mocks'
 
 export default async function BlogPage() {
-  const posts = await getBlogPosts(9).catch(() => PLACEHOLDER_POSTS)
+  const posts = await getBlogPosts(9).catch(() => MOCK_BLOG_POSTS)
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-12">

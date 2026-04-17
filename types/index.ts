@@ -45,7 +45,53 @@ export interface BlogPostFull extends BlogPost {
   date: string
 }
 
-export interface CartItem {
-  product: Product
+export interface WooCartItemPrice {
+  price: string
+  regular_price: string
+  currency_code: string
+  currency_minor_unit: number
+}
+
+export interface WooCartItem {
+  key: string
+  id: number
+  name: string
   quantity: number
+  prices: WooCartItemPrice
+  images: { src: string; alt: string }[]
+}
+
+export interface WooCartTotals {
+  total_items: string
+  total_price: string
+  currency_code: string
+  currency_minor_unit: number
+}
+
+export interface WooCart {
+  items: WooCartItem[]
+  totals: WooCartTotals
+}
+
+export interface WooCheckoutAddress {
+  first_name: string
+  last_name: string
+  address_1: string
+  city: string
+  postcode: string
+  country: string
+  email: string
+  phone: string
+}
+
+export interface WooCheckoutPayload {
+  billing_address: WooCheckoutAddress
+  shipping_address: Omit<WooCheckoutAddress, 'email' | 'phone'>
+  payment_method: string
+}
+
+export interface WooOrder {
+  id: number
+  status: string
+  order_key: string
 }

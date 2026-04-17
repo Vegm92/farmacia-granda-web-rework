@@ -1,6 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import ProductCard from '../../components/product/ProductCard'
 import type { Product } from '../../types'
+import * as cartContext from '@/lib/cart-context'
+
+jest.mock('@/lib/cart-context')
+
+beforeEach(() => {
+  jest.mocked(cartContext.useCart).mockReturnValue({ cart: null, refresh: jest.fn() })
+})
 
 const base: Product = {
   id: 1,

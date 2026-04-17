@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import AddToCartButton from '@/components/product/AddToCartButton'
 import type { Product } from '@/types'
 
 function formatPrice(price: string): string {
@@ -51,9 +52,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <span className="text-xs text-fg-muted line-through">{formatPrice(regular_price)}</span>
           )}
         </div>
-        <button className="w-full bg-primary text-white rounded text-xs font-semibold py-2 hover:bg-primary-mid transition-colors">
-          + Añadir
-        </button>
+        <AddToCartButton productId={product.id} />
       </div>
     </div>
   )

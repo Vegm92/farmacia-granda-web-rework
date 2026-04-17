@@ -2,8 +2,14 @@ import { render, screen } from '@testing-library/react'
 import CategoryPage from '@/app/categoria/[slug]/page'
 import { getProductsByCategory } from '@/lib/woocommerce'
 import type { Product } from '@/types'
+import * as cartContext from '@/lib/cart-context'
 
 jest.mock('@/lib/woocommerce')
+jest.mock('@/lib/cart-context')
+
+beforeEach(() => {
+  jest.mocked(cartContext.useCart).mockReturnValue({ cart: null, refresh: jest.fn() })
+})
 jest.mock('next/navigation', () => ({
   useRouter: () => ({ push: jest.fn() }),
   usePathname: () => '/categoria/dermofarmacia',

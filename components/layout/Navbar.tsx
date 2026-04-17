@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { Search, User, ShoppingCart } from 'lucide-react'
+import { Search, User } from 'lucide-react'
+import CartBadge from '@/components/layout/CartBadge'
 import type { NavLink } from '@/types'
 
 interface NavbarProps {
@@ -40,9 +41,7 @@ export default function Navbar({ links }: NavbarProps) {
         <button aria-label="Mi cuenta" className="text-white/80 hover:text-white transition-colors">
           <User size={20} strokeWidth={1.8} />
         </button>
-        <button aria-label="Carrito" className="text-white/80 hover:text-white transition-colors">
-          <ShoppingCart size={20} strokeWidth={1.8} />
-        </button>
+        <CartBadge />
       </div>
     </nav>
   )

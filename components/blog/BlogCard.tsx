@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { BlogPost } from '@/types'
 
@@ -15,11 +16,22 @@ export default function BlogCard({ post }: Props) {
   return (
     <Link href={`/blog/${post.slug}`} className="group block">
       <article className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-        <div
-          className="h-40 w-full"
-          style={{ backgroundColor: safeColor(post.image_color) }}
-          aria-hidden="true"
-        />
+        <div className="relative h-40 w-full overflow-hidden">
+          {post.featured_media_url ? (
+            <Image
+              src={post.featured_media_url}
+              alt={post.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 33vw"
+            />
+          ) : (
+            <div
+              className="skeleton-shimmer h-full w-full"
+              aria-hidden="true"
+            />
+          )}
+        </div>
         <div className="p-5">
           <span className="text-xs font-medium text-primary uppercase tracking-wide">
             {post.tag}
