@@ -5,6 +5,7 @@ const KEY = process.env.WOOCOMMERCE_KEY
 const SECRET = process.env.WOOCOMMERCE_SECRET
 
 function authHeader(): string {
+  if (!KEY || !SECRET) throw new Error('WooCommerce credentials not configured')
   const credentials = `${KEY}:${SECRET}`
   if (typeof btoa !== 'undefined') return 'Basic ' + btoa(credentials)
   return 'Basic ' + Buffer.from(credentials).toString('base64')

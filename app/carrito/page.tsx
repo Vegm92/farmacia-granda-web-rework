@@ -4,12 +4,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Trash2 } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
-import { removeFromWooCart, updateWooCartItem } from '@/lib/woo-cart'
+import { removeMockCartItem, updateMockCartItem } from '@/lib/mock-cart'
 import type { WooCartItem } from '@/types'
-
-function minorToDecimal(value: string, minorUnit: number): number {
-  return parseInt(value, 10) / Math.pow(10, minorUnit)
-}
 
 function fmt(value: number): string {
   return '€' + value.toFixed(2).replace('.', ',')
@@ -17,16 +13,15 @@ function fmt(value: number): string {
 
 export default function CarritoPage() {
   const { cart, refresh } = useCart()
-  const minorUnit = cart?.totals.currency_minor_unit ?? 2
 
-  async function handleRemove(key: string) {
-    await removeFromWooCart(key)
+  async function handleRemove(id: number) {
+    removeMockCartItem(id)
     await refresh()
   }
 
-  async function handleUpdate(key: string, quantity: number) {
-    if (quantity <= 0) return handleRemove(key)
-    await updateWooCartItem(key, quantity)
+  async function handleUpdate(id: number, quantity: number) {
+    if (quantity <= 0) return handleRemove(id)
+    updateMockCartItem(id, quantity)
     await refresh()
   }
 
@@ -41,7 +36,10 @@ export default function CarritoPage() {
     )
   }
 
-  const total = minorToDecimal(cart.totals.total_price, minorUnit)
+  const total = cart.items.reduce(
+    (sum, item) => sum + parseFloat(item.prices.price) * item.quantity,
+    0
+  )
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-12">
@@ -49,7 +47,6 @@ export default function CarritoPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 flex flex-col gap-4">
           {cart.items.map((item: WooCartItem) => {
-            const price = minorToDecimal(item.prices.price, minorUnit)
             const image = item.images[0]
             return (
               <div key={item.key} className="flex gap-4 p-4 bg-white border border-border rounded-xl">
@@ -62,16 +59,16 @@ export default function CarritoPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-fg-primary mt-0.5 line-clamp-2">{item.name}</p>
-                  <p className="text-sm font-bold text-primary mt-1">{fmt(price * item.quantity)}</p>
+                  <p className="text-sm font-bold text-primary mt-1">{fmt(parseFloat(item.prices.price) * item.quantity)}</p>
                 </div>
                 <div className="flex flex-col items-end gap-3 shrink-0">
-                  <button type="button" aria-label={`Eliminar ${item.name}`} onClick={() => handleRemove(item.key)} className="text-fg-muted hover:text-destructive transition-colors">
+                  <button type="button" aria-label={`Eliminar ${item.name}`} onClick={() => handleRemove(item.id)} className="text-fg-muted hover:text-destructive transition-colors">
                     <Trash2 size={16} />
                   </button>
                   <div className="flex items-center gap-1 border border-border rounded-lg overflow-hidden">
-                    <button type="button" aria-label="Reducir cantidad" onClick={() => handleUpdate(item.key, item.quantity - 1)} className="w-7 h-7 text-fg-primary hover:bg-primary-light transition-colors text-sm font-medium">−</button>
+                    <button type="button" aria-label="Reducir cantidad" onClick={() => handleUpdate(item.id, item.quantity - 1)} className="w-7 h-7 text-fg-primary hover:bg-primary-light transition-colors text-sm font-medium">−</button>
                     <span className="w-7 text-center text-sm font-medium text-fg-primary">{item.quantity}</span>
-                    <button type="button" aria-label="Aumentar cantidad" onClick={() => handleUpdate(item.key, item.quantity + 1)} className="w-7 h-7 text-fg-primary hover:bg-primary-light transition-colors text-sm font-medium">+</button>
+                    <button type="button" aria-label="Aumentar cantidad" onClick={() => handleUpdate(item.id, item.quantity + 1)} className="w-7 h-7 text-fg-primary hover:bg-primary-light transition-colors text-sm font-medium">+</button>
                   </div>
                 </div>
               </div>

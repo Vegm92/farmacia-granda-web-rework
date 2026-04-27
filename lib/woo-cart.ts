@@ -3,6 +3,8 @@ import type { WooCart, WooCheckoutPayload, WooOrder } from '@/types'
 const BASE = process.env.NEXT_PUBLIC_WOOCOMMERCE_URL ?? ''
 const TOKEN_KEY = 'wc-cart-token'
 
+const MOCK_MODE = !BASE
+
 function getToken(): string | null {
   if (typeof window === 'undefined') return null
   return localStorage.getItem(TOKEN_KEY)
@@ -21,6 +23,7 @@ function storeHeaders(): HeadersInit {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  if (MOCK_MODE) throw new Error('WooCommerce not configured')
   const res = await fetch(`${BASE}${path}`, {
     ...options,
     headers: { ...storeHeaders(), ...(options.headers ?? {}) },

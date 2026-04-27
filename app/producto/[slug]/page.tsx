@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getProductBySlug } from '@/lib/data'
 import { MOCK_PRODUCTS } from '@/lib/mocks'
+import AddToCartButton from '@/components/product/AddToCartButton'
 
 export function generateStaticParams() {
   return MOCK_PRODUCTS.map((p) => ({ slug: p.slug }))
@@ -65,13 +66,7 @@ export default async function ProductPage({ params }: Props) {
             />
           )}
 
-          <button
-            type="button"
-            aria-label={`Añadir ${product.name} al carrito`}
-            className="mt-4 bg-primary text-white font-medium px-6 py-3 rounded-lg hover:bg-primary-mid transition-colors"
-          >
-            Añadir al carrito
-          </button>
+          <AddToCartButton product={product} />
 
           {product.stock_status === 'outofstock' && (
             <p className="text-sm text-destructive">Sin stock</p>

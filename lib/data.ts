@@ -12,15 +12,15 @@ import {
   getMockBlogPost,
 } from '@/lib/mocks'
 
-const MOCK_MODE = process.env.USE_MOCK_DATA === 'true' || !process.env.WOOCOMMERCE_URL
+import { IS_MOCK_MODE } from '@/lib/cart-mode'
 
 export async function getFeaturedProducts(limit = 4): Promise<Product[]> {
-  if (MOCK_MODE) return MOCK_PRODUCTS.slice(0, limit)
+  if (IS_MOCK_MODE) return MOCK_PRODUCTS.slice(0, limit)
   return woo.getFeaturedProducts(limit)
 }
 
 export async function getRecentPosts(limit = 3): Promise<BlogPost[]> {
-  if (MOCK_MODE) return MOCK_BLOG_POSTS.slice(0, limit)
+  if (IS_MOCK_MODE) return MOCK_BLOG_POSTS.slice(0, limit)
   return woo.getRecentPosts(limit)
 }
 
@@ -30,21 +30,21 @@ export async function getProductsByCategory(
   orderby = 'menu_order',
   order = 'asc'
 ): Promise<Product[]> {
-  if (MOCK_MODE) return MOCK_PRODUCTS
+  if (IS_MOCK_MODE) return MOCK_PRODUCTS
   return woo.getProductsByCategory(slug, perPage, orderby, order)
 }
 
 export async function getProductBySlug(slug: string): Promise<ProductDetail | null> {
-  if (MOCK_MODE) return getMockProductDetail(slug)
+  if (IS_MOCK_MODE) return getMockProductDetail(slug)
   return woo.getProductBySlug(slug)
 }
 
 export async function getBlogPosts(limit = 9): Promise<BlogPost[]> {
-  if (MOCK_MODE) return MOCK_BLOG_POSTS.slice(0, limit)
+  if (IS_MOCK_MODE) return MOCK_BLOG_POSTS.slice(0, limit)
   return woo.getBlogPosts(limit)
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPostFull | null> {
-  if (MOCK_MODE) return getMockBlogPost(slug)
+  if (IS_MOCK_MODE) return getMockBlogPost(slug)
   return woo.getBlogPostBySlug(slug)
 }

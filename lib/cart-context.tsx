@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import type { ReactNode } from 'react'
-import { getWooCart } from '@/lib/woo-cart'
+import { IS_MOCK_MODE } from '@/lib/cart-mode'
+import { getMockCart } from '@/lib/mock-cart'
 import type { WooCart } from '@/types'
 
 interface CartContextValue {
@@ -17,7 +18,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const refresh = useCallback(async () => {
     try {
-      const data = await getWooCart()
+      const data = getMockCart()
       setCart(data)
     } catch {
       // silently fail — cart stays as last known state

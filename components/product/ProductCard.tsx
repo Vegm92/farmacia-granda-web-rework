@@ -58,7 +58,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       <div className="px-3 pb-3">
-        <AddToCartButton productId={product.id} />
+        <AddToCartButton product={product} />
       </div>
     </div>
   )

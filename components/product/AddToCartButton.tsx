@@ -2,21 +2,28 @@
 
 import { useState } from 'react'
 import { addToWooCart } from '@/lib/woo-cart'
+import { addMockCartItem } from '@/lib/mock-cart'
 import { useCart } from '@/lib/cart-context'
+import { IS_MOCK_MODE } from '@/lib/cart-mode'
+import type { Product } from '@/types'
 
 interface AddToCartButtonProps {
-  productId: number
+  product: Product
   label?: string
 }
 
-export default function AddToCartButton({ productId, label = '+ Añadir' }: AddToCartButtonProps) {
+export default function AddToCartButton({ product, label = '+ Añadir' }: AddToCartButtonProps) {
   const { refresh } = useCart()
   const [loading, setLoading] = useState(false)
 
   async function handleClick() {
     setLoading(true)
     try {
-      await addToWooCart(productId, 1)
+      if (IS_MOCK_MODE) {
+        addMockCartItem(product.id, product.name, product.price, product.images)
+      } else {
+        await addToWooCart(product.id, 1)
+      }
       await refresh()
     } finally {
       setLoading(false)
