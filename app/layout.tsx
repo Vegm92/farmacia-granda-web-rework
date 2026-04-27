@@ -25,7 +25,7 @@ const NAV_LINKS: NavLink[] = [
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es" className={inter.variable}>
-      <body>
+      <body suppressHydrationWarning>
         <CartProvider>
           <Navbar links={NAV_LINKS} />
           {children}

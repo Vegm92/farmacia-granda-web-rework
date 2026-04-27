@@ -35,12 +35,12 @@ export default function Navbar({ links }: NavbarProps) {
       </ul>
 
       <div className="flex items-center gap-[18px] ml-5">
-        <button aria-label="Buscar" className="text-white/80 hover:text-white transition-colors">
+        <Link href="/buscar" aria-label="Buscar" className="text-white/80 hover:text-white transition-colors">
           <Search size={20} strokeWidth={1.8} />
-        </button>
-        <button aria-label="Mi cuenta" className="text-white/80 hover:text-white transition-colors">
+        </Link>
+        <Link href="/mi-cuenta" aria-label="Mi cuenta" className="text-white/80 hover:text-white transition-colors">
           <User size={20} strokeWidth={1.8} />
-        </button>
+        </Link>
         <CartBadge />
       </div>
     </nav>
