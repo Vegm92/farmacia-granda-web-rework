@@ -1,9 +1,8 @@
 import BlogCard from '@/components/blog/BlogCard'
-import { getBlogPosts } from '@/lib/woocommerce'
-import { MOCK_BLOG_POSTS } from '@/lib/mocks'
+import { getBlogPosts } from '@/lib/data'
 
 export default async function BlogPage() {
-  const posts = await getBlogPosts(9).catch(() => MOCK_BLOG_POSTS)
+  const posts = await getBlogPosts(9)
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-12">

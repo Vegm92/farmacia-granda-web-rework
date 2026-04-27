@@ -1,7 +1,11 @@
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { getBlogPostBySlug } from '@/lib/woocommerce'
-import { MOCK_BLOG_POST_FULL, MOCK_BLOG_POSTS } from '@/lib/mocks'
+import { getBlogPostBySlug } from '@/lib/data'
+import { MOCK_BLOG_POSTS } from '@/lib/mocks'
+
+export function generateStaticParams() {
+  return MOCK_BLOG_POSTS.map((p) => ({ slug: p.slug }))
+}
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -9,10 +13,7 @@ interface Props {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
-  const mockFallback = MOCK_BLOG_POSTS.find((p) => p.slug === slug)
-    ? MOCK_BLOG_POST_FULL
-    : null
-  const post = await getBlogPostBySlug(slug).catch(() => mockFallback)
+  const post = await getBlogPostBySlug(slug)
   if (!post) return notFound()
 
   const formattedDate = new Date(post.date).toLocaleDateString('es-ES', {
