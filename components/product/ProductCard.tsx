@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import AddToCartButton from '@/components/product/AddToCartButton'
 import type { Product } from '@/types'
 
@@ -11,7 +12,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { name, brand, price, regular_price, images, badge, discount_percent } = product
+  const { name, brand, price, regular_price, images, badge, discount_percent, slug } = product
   const hasDiscount = badge === 'discount' && regular_price && price !== regular_price
 
   return (
@@ -27,31 +28,36 @@ export default function ProductCard({ product }: ProductCardProps) {
         </span>
       )}
 
-      <div className="bg-primary-light h-32 flex items-center justify-center">
-        {images[0] ? (
-          <Image
-            src={images[0].src}
-            alt={images[0].alt || name}
-            width={80}
-            height={80}
-            className="object-contain"
-          />
-        ) : (
-          <div className="w-16 h-16 bg-primary-subtle rounded-lg" />
-        )}
-      </div>
-
-      <div className="p-3">
-        <p className="text-[10px] font-semibold text-fg-muted uppercase tracking-[0.5px] mb-[3px]">
-          {brand}
-        </p>
-        <p className="text-[12px] font-medium text-fg-primary leading-snug mb-2">{name}</p>
-        <div className="flex items-center gap-1.5 mb-2.5">
-          <span className="text-[15px] font-bold text-fg-primary">{formatPrice(price)}</span>
-          {hasDiscount && (
-            <span className="text-xs text-fg-muted line-through">{formatPrice(regular_price)}</span>
+      <Link href={`/producto/${slug}`} className="block">
+        <div className="bg-primary-light h-32 flex items-center justify-center">
+          {images[0] ? (
+            <Image
+              src={images[0].src}
+              alt={images[0].alt || name}
+              width={80}
+              height={80}
+              className="object-contain"
+            />
+          ) : (
+            <div className="w-16 h-16 bg-primary-subtle rounded-lg" />
           )}
         </div>
+
+        <div className="px-3 pt-3 pb-1">
+          <p className="text-[10px] font-semibold text-fg-muted uppercase tracking-[0.5px] mb-[3px]">
+            {brand}
+          </p>
+          <p className="text-[12px] font-medium text-fg-primary leading-snug mb-2">{name}</p>
+          <div className="flex items-center gap-1.5 mb-2.5">
+            <span className="text-[15px] font-bold text-fg-primary">{formatPrice(price)}</span>
+            {hasDiscount && (
+              <span className="text-xs text-fg-muted line-through">{formatPrice(regular_price)}</span>
+            )}
+          </div>
+        </div>
+      </Link>
+
+      <div className="px-3 pb-3">
         <AddToCartButton productId={product.id} />
       </div>
     </div>

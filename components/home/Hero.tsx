@@ -1,7 +1,13 @@
-import { Search } from 'lucide-react'
+import Link from 'next/link'
+import HeroSearch from '@/components/home/HeroSearch'
+
+interface HeroPill {
+  label: string
+  href: string
+}
 
 interface HeroProps {
-  pills: string[]
+  pills: HeroPill[]
 }
 
 export default function Hero({ pills }: HeroProps) {
@@ -14,28 +20,17 @@ export default function Hero({ pills }: HeroProps) {
         5.000+ productos seleccionados · Farmacéuticos expertos · Envío en 24-48h
       </p>
 
-      <div className="flex items-center max-w-[520px] mx-auto mb-5 bg-white border-2 border-primary rounded-md overflow-hidden shadow-sm">
-        <div className="flex items-center px-3 text-fg-muted">
-          <Search size={16} strokeWidth={2} />
-        </div>
-        <input
-          type="text"
-          placeholder="Busca un producto, marca o síntoma..."
-          className="flex-1 py-3 px-1 text-sm outline-none bg-transparent placeholder:text-fg-muted"
-        />
-        <button className="bg-primary text-white text-[13px] font-semibold px-6 py-3 hover:bg-primary-mid transition-colors">
-          Buscar
-        </button>
-      </div>
+      <HeroSearch />
 
       <div className="flex gap-2 justify-center flex-wrap">
         {pills.map((pill) => (
-          <button
-            key={pill}
+          <Link
+            key={pill.label}
+            href={pill.href}
             className="bg-white border border-primary-subtle rounded-full text-xs text-primary font-medium px-[14px] py-1.5 hover:bg-primary hover:text-white transition-colors"
           >
-            {pill}
-          </button>
+            {pill.label}
+          </Link>
         ))}
       </div>
     </section>
