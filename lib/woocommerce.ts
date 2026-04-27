@@ -5,13 +5,16 @@ const KEY = process.env.WOOCOMMERCE_KEY
 const SECRET = process.env.WOOCOMMERCE_SECRET
 
 function authHeader(): string {
-  return 'Basic ' + Buffer.from(`${KEY}:${SECRET}`).toString('base64')
+  const credentials = `${KEY}:${SECRET}`
+  if (typeof btoa !== 'undefined') return 'Basic ' + btoa(credentials)
+  return 'Basic ' + Buffer.from(credentials).toString('base64')
 }
 
 async function wcFetch<T>(path: string): Promise<T> {
+  if (!BASE_URL) throw new Error('WOOCOMMERCE_URL not configured')
   const res = await fetch(`${BASE_URL}${path}`, {
     headers: { Authorization: authHeader() },
-    next: { revalidate: 3600 },
+    cache: 'force-cache',
   })
   if (!res.ok) throw new Error(`WooCommerce API error: ${res.status}`)
   return res.json()
